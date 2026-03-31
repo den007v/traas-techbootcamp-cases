@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #111827;
+  --color-cta: #e11d48;
+  --color-cta-hover: #be123c;
+  --color-traas-accent: #dc2626;
+  --color-bootcamp-accent: #f43f5e;
+  --color-bg: #fffbf7;
+  --color-surface: #ffffff;
+  --color-text: #0f172a;
+  --color-muted: #475569;
+  --color-border: #e5e7eb;
+  --color-tag-bg: #fff1f2;
+  --color-filter-bg: #ffffff;
+  --focus-ring: rgba(225, 29, 72, 0.35);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: Inter, "Segoe UI", Roboto, sans-serif;
+}
+
+::selection {
+  background: #fecdd3;
+  color: var(--color-primary);
+}
+
+.surface-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.text-muted {
+  color: var(--color-muted);
+}
+
+.btn-cta {
+  background: var(--color-cta);
+  color: #fff;
+  border: 1px solid var(--color-cta);
+}
+
+.btn-cta:hover {
+  background: var(--color-cta-hover);
+  border-color: var(--color-cta-hover);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-border);
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-primary);
+}
+
+.focusable:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.chip-base {
+  background: var(--color-tag-bg);
+  border: 1px solid #fecdd3;
+  color: #9f1239;
+}
+
+.chip-traas {
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+}
+
+.chip-bootcamp {
+  background: #ffe4e6;
+  border: 1px solid #fda4af;
+  color: #9f1239;
+}
+
+.filter-surface {
+  background: var(--color-filter-bg);
+  border: 1px solid var(--color-border);
+}
+
+.nav-link {
+  color: var(--color-muted);
+}
+
+.nav-link:hover {
+  background: #fff1f2;
+  color: var(--color-primary);
+}

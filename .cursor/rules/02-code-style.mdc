@@ -1,0 +1,43 @@
+---
+description: Code style and architecture conventions for web app source files
+globs: **/*.{ts,tsx,js,jsx}
+alwaysApply: false
+---
+
+# Code Style and Architecture
+
+## General principles
+- Prefer simple, readable, maintainable solutions over clever abstractions.
+- Keep functions and components focused on one responsibility.
+- Avoid large files; split logic into reusable modules when needed.
+
+## Next.js and React
+- Use App Router patterns and Server Components by default.
+- Use Client Components only when interactivity or browser APIs are required.
+- Keep route-level UI in `app/` and shared UI in reusable component folders.
+- Co-locate feature-specific code close to the route or feature that uses it.
+
+## TypeScript conventions
+- Avoid `any`; use explicit types, unions, or generics.
+- Define domain types/interfaces for core entities (for example, Case and UserProfile).
+- Type all function inputs and outputs for non-trivial logic.
+
+## Data and state
+- Keep business logic out of UI markup-heavy components.
+- Centralize Supabase data access in dedicated helpers/services.
+- Validate incoming data and handle loading/empty/error states explicitly.
+
+## UI and styling
+- Use Tailwind utility classes consistently; avoid ad-hoc inline styles.
+- Build mobile-first layouts and verify key breakpoints.
+- Keep visual distinction between TraaS and Tech Bootcamp consistent.
+
+## Reliability and safety
+- Do not remove existing behavior without explicit confirmation.
+- Preserve mock data paths until real Supabase flow is verified.
+- Add concise comments only where intent is not obvious from code.
+
+## Delivery workflow
+- Before major edits: state plan and touched files.
+- Implement in small steps and verify each step before moving on.
+- Run lint/type checks when changes are substantial.

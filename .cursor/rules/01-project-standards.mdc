@@ -1,0 +1,33 @@
+---
+description: Standards and phased workflow for TraaS and Tech Bootcamp cases site
+alwaysApply: true
+---
+
+# TraaS + Tech Bootcamp Project Rules
+
+## Product scope
+- Build a cases website for two tracks: TraaS and Tech Bootcamp.
+- Include: landing page, two case-list pages, single case page, user account, AI assistant placeholder.
+
+## Required stack
+- Next.js (App Router), Tailwind CSS, Supabase (DB/Auth/Storage), Vercel.
+
+## Work process (mandatory)
+- Do not implement "everything at once"; ship in small verified stages.
+- Start each stage with: analysis, architecture, and file-level change plan.
+- Build order: scaffold -> UI pages -> case data model -> filters -> case detail -> Supabase -> auth/account -> case form -> roles -> AI placeholder -> QA -> deploy prep.
+- Keep temporary mock data until real integration is confirmed working.
+
+## Design and UX
+- Use reference style direction from `techbootcamp-alumni.netlify.app` without 1:1 copying.
+- Keep UI modern, clean, mobile-first, and product-oriented.
+- Clearly differentiate TraaS and Tech Bootcamp in visuals and content labels.
+
+## Data model baseline
+- Case entity must support: track type, title, slug, company, author, role, short and full descriptions, challenge, solution, result, tags, year/date, cover image, publish status.
+
+## Agent guardrails
+- Explain plan first, then implement.
+- Show which files will be created/changed before edits.
+- Do not delete existing files or major sections without user confirmation.
+- Do not commit or deploy unless explicitly requested.

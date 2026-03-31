@@ -1,0 +1,51 @@
+---
+description: Supabase/database guardrails for schema, migrations, roles, and RLS
+globs: "{supabase/**/*.sql,**/migrations/**/*.sql,**/*schema*.sql,**/*policy*.sql}"
+alwaysApply: false
+---
+
+# Supabase / Database Layer Guardrails
+
+## Scope
+- Apply this rule to Supabase and SQL work: schema, migrations, roles, grants, and RLS policies.
+- Treat any DB task as safety-critical, especially for production data and access control.
+
+## Mandatory workflow
+- First provide a SQL change plan, then implement migration(s).
+- Explain expected impact before changing schema, roles, grants, or policies.
+- Apply database changes only via migration files; avoid ad-hoc manual edits as the main path.
+
+## Schema design rules
+- Prefer additive and backward-compatible changes.
+- Use clear naming, explicit data types, and sensible defaults.
+- Add primary keys, required foreign keys, and indexes for frequent filters/joins.
+- For nullable vs not-null decisions, document why and how existing rows are handled.
+
+## Migration rules
+- Every DB change must be represented by a migration file.
+- Keep migrations small, reviewable, and reversible where possible.
+- Split high-risk changes into stages (prepare -> migrate data -> enforce constraints).
+- Do not combine unrelated schema, role, and policy changes in one migration.
+
+## Roles and access model
+- Maintain role separation: `admin`, `editor`, `participant`.
+- Follow least privilege for all roles.
+- Never grant broad access to `anon`; grant only explicitly required read access.
+- Re-check role permissions when adding new tables or columns.
+
+## RLS policy rules
+- For private tables, RLS must be enabled and validated.
+- Do not modify existing RLS policies blindly; review current policies and access paths first.
+- For every policy change, specify: who can select/insert/update/delete and why.
+- Validate policies against role scenarios (`admin`, `editor`, `participant`, `anon`).
+
+## Destructive changes protection (ask first)
+- Do not drop tables, columns, constraints, indexes, or policies without explicit user confirmation.
+- Do not run data-destructive SQL (mass delete/truncate/backfill overwrite) without explicit approval.
+- If destructive change is approved, provide backup/rollback plan and blast-radius explanation first.
+
+## Safe SQL change checklist
+- Confirm affected tables, columns, indexes, and policies.
+- Confirm impact on existing queries, API responses, and auth/RLS behavior.
+- Confirm migration order and data compatibility.
+- Confirm how to verify after apply (smoke queries and role-based access checks).
