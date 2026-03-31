@@ -14,6 +14,11 @@ type CaseRow = {
   result: string;
   year: number;
   company_id: string;
+  author_name: string;
+  author_role: string | null;
+  challenge: string | null;
+  solution: string | null;
+  full_story: string | null;
   companies: { name: string } | { name: string }[] | null;
 };
 
@@ -46,7 +51,7 @@ async function loadCasesFromSupabase(track?: CaseTrack): Promise<CaseItem[] | nu
 
   let query = supabase
     .from("cases")
-    .select("id,track,slug,title,topic,short_description,result,year,company_id,companies(name)")
+    .select("id,track,slug,title,topic,short_description,result,year,company_id,author_name,author_role,challenge,solution,full_story,companies(name)")
     .eq("is_published", true)
     .order("year", { ascending: false })
     .order("created_at", { ascending: false });
@@ -88,7 +93,12 @@ async function loadCasesFromSupabase(track?: CaseTrack): Promise<CaseItem[] | nu
     shortDescription: row.short_description,
     tags: [...new Set(tagMap.get(row.id) ?? [])],
     year: row.year,
-    result: row.result
+    result: row.result,
+    authorName: row.author_name,
+    authorRole: row.author_role ?? undefined,
+    challenge: row.challenge ?? undefined,
+    solution: row.solution ?? undefined,
+    fullStory: row.full_story ?? undefined
   }));
 }
 
@@ -111,7 +121,7 @@ export async function getCaseBySlug(slug: string): Promise<CaseItem | null> {
   if (supabase) {
     const { data: row, error } = await supabase
       .from("cases")
-      .select("id,track,slug,title,topic,short_description,result,year,company_id,companies(name)")
+      .select("id,track,slug,title,topic,short_description,result,year,company_id,author_name,author_role,challenge,solution,full_story,companies(name)")
       .eq("slug", slug)
       .eq("is_published", true)
       .maybeSingle();
@@ -137,7 +147,12 @@ export async function getCaseBySlug(slug: string): Promise<CaseItem | null> {
         shortDescription: row.short_description,
         tags: [...new Set(tags)],
         year: row.year,
-        result: row.result
+        result: row.result,
+        authorName: row.author_name,
+        authorRole: row.author_role ?? undefined,
+        challenge: row.challenge ?? undefined,
+        solution: row.solution ?? undefined,
+        fullStory: row.full_story ?? undefined
       };
     }
   }

@@ -11,4 +11,9 @@ export type CaseItem = {
   tags: string[];
   year: number;
   result: string;
+  authorName?: string;
+  authorRole?: string;
+  challenge?: string;
+  solution?: string;
+  fullStory?: string;
 };

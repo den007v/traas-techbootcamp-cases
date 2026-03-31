@@ -11,7 +11,9 @@ export const mockCases: CaseItem[] = [
     shortDescription: "Сократили время отчетности и повысили точность данных.",
     tags: ["analytics", "process"],
     year: 2025,
-    result: "Снижение времени подготовки отчетов на 40%"
+    result: "Снижение времени подготовки отчетов на 40%",
+    authorName: "Команда TraaS",
+    authorRole: "Program participant"
   },
   {
     id: "2",
@@ -23,7 +25,9 @@ export const mockCases: CaseItem[] = [
     shortDescription: "Автоматизировали ответы первой линии поддержки.",
     tags: ["ml", "support"],
     year: 2024,
-    result: "Ускорение обработки запросов на 28%"
+    result: "Ускорение обработки запросов на 28%",
+    authorName: "Команда Tech Bootcamp",
+    authorRole: "Program participant"
   },
   {
     id: "3",
@@ -35,7 +39,9 @@ export const mockCases: CaseItem[] = [
     shortDescription: "Упростили онбординг новых участников и сократили churn.",
     tags: ["ops", "retention"],
     year: 2024,
-    result: "Снижение оттока на 19%"
+    result: "Снижение оттока на 19%",
+    authorName: "Команда TraaS",
+    authorRole: "Program participant"
   },
   {
     id: "4",
@@ -47,7 +53,9 @@ export const mockCases: CaseItem[] = [
     shortDescription: "Собрали дашборды по ключевым метрикам продуктовых команд.",
     tags: ["analytics", "dashboards"],
     year: 2025,
-    result: "Ускорение принятия решений в продукте на 30%"
+    result: "Ускорение принятия решений в продукте на 30%",
+    authorName: "Команда Tech Bootcamp",
+    authorRole: "Program participant"
   },
   {
     id: "5",
@@ -59,7 +67,9 @@ export const mockCases: CaseItem[] = [
     shortDescription: "Внедрили поток подготовки и публикации кейсов без ручных шагов.",
     tags: ["automation", "content"],
     year: 2023,
-    result: "Рост скорости публикации в 2 раза"
+    result: "Рост скорости публикации в 2 раза",
+    authorName: "Команда TraaS",
+    authorRole: "Program participant"
   },
   {
     id: "6",
@@ -71,6 +81,8 @@ export const mockCases: CaseItem[] = [
     shortDescription: "Пересобрали механику мероприятий и регулярных активностей.",
     tags: ["community", "engagement"],
     year: 2023,
-    result: "Рост MAU сообщества на 35%"
+    result: "Рост MAU сообщества на 35%",
+    authorName: "Команда Tech Bootcamp",
+    authorRole: "Program participant"
   }
 ];
