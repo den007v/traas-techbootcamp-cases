@@ -37,10 +37,8 @@ export function CaseCard({ item }: CaseCardProps) {
 
       {/* Title */}
       <h3
-        className="font-extrabold leading-tight tracking-tight"
+        className="text-xl font-semibold leading-snug md:text-2xl"
         style={{
-          fontFamily: "var(--font-display)",
-          fontSize: "clamp(1.2rem, 1.05rem + 0.85vw, 1.65rem)",
           color: "var(--color-text)",
         }}
       >
