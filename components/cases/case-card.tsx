@@ -16,25 +16,15 @@ function initials(name: string): string {
 export function CaseCard({ item }: CaseCardProps) {
   return (
     <article
-      className="surface-card flex flex-col gap-4 rounded-[1.25rem] p-6 transition"
+      className="surface-card hover-lift flex h-full flex-col gap-4 rounded-[1.25rem] p-6"
       style={{
         transition: "box-shadow var(--transition-ui), border-color var(--transition-ui), transform var(--transition-ui)",
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-lg)";
-        (e.currentTarget as HTMLElement).style.borderColor = "var(--color-faint)";
-        (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.boxShadow = "";
-        (e.currentTarget as HTMLElement).style.borderColor = "";
-        (e.currentTarget as HTMLElement).style.transform = "";
       }}
     >
       {/* Tags */}
       {item.tags.length > 0 && (
         <div className="flex flex-wrap gap-2">
-          {item.tags.slice(0, 3).map((tag) => (
+          {item.tags.slice(0, 2).map((tag) => (
             <span
               key={tag}
               className="chip-base rounded-full px-3 py-1 text-xs font-semibold"
@@ -50,7 +40,7 @@ export function CaseCard({ item }: CaseCardProps) {
         className="font-extrabold leading-tight tracking-tight"
         style={{
           fontFamily: "var(--font-display)",
-          fontSize: "clamp(1.125rem, 1rem + 0.75vw, 1.5rem)",
+          fontSize: "clamp(1.2rem, 1.05rem + 0.85vw, 1.65rem)",
           color: "var(--color-text)",
         }}
       >
@@ -58,8 +48,7 @@ export function CaseCard({ item }: CaseCardProps) {
       </h3>
 
       {/* Result block */}
-      <div className="result-highlight">
-        <span style={{ color: "var(--color-primary)", flexShrink: 0, lineHeight: 1, marginTop: "1px" }}>↗</span>
+      <div className="result-highlight" style={{ borderLeft: "2px solid var(--color-primary)" }}>
         <span>{item.result}</span>
       </div>
 
@@ -104,7 +93,7 @@ export function CaseCard({ item }: CaseCardProps) {
           className="focusable shrink-0 text-sm font-semibold transition hover:opacity-70"
           style={{ color: "var(--color-primary)" }}
         >
-          Смотреть кейс →
+          Смотреть кейс
         </Link>
       </div>
     </article>
