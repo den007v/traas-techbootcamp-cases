@@ -316,8 +316,7 @@ function MarkdownContent({ content }: { content: string }) {
               </ol>
             );
           },
-          li({ children, node, ...props }) {
-            const isOrdered = (node?.parent as { tagName?: string })?.tagName === "ol";
+          li({ children }) {
             return (
               <li
                 style={{
@@ -335,7 +334,7 @@ function MarkdownContent({ content }: { content: string }) {
                     fontWeight: 700,
                   }}
                 >
-                  {isOrdered ? "→" : "—"}
+                  —
                 </span>
                 {children}
               </li>
