@@ -1,17 +1,33 @@
 import Link from "next/link";
 
 const productMetrics = [
-  { num: "600+", label: "Образовательных решений" },
-  { num: "550+", label: "Преподавателей и спикеров" },
-  { num: "40 000+", label: "Слушателей ежегодно" },
-  { num: "6 600+", label: "Компаний-клиентов" },
+  { num: "End-to-end", label: "От диагностики до запуска" },
+  { num: "Бизнес + ИТ", label: "Единая программа изменений" },
+  { num: "Quick wins / Long-term", label: "Баланс быстрых и долгих эффектов" },
+  { num: "Capability-aligned", label: "Фокус на ключевых возможностях" },
 ];
 
 const traasServices = [
-  { title: "Диагностика текущих процессов", description: "Описание услуги добавим позже. Здесь будет детализация по формату диагностики и ожидаемому результату." },
-  { title: "Проектирование траектории развития", description: "Описание услуги добавим позже. Здесь будет показано, как строится маршрут обучения и внедрения практик." },
-  { title: "Сопровождение внедрения изменений", description: "Описание услуги добавим позже. Здесь будет план поддержки команды на этапе внедрения и закрепления результата." },
-  { title: "Оценка эффекта и масштабирование", description: "Описание услуги добавим позже. Здесь опишем метрики успеха и подход к масштабированию." },
+  {
+    title: "Диагностика текущих процессов",
+    description:
+      "Проводим анализ ключевых процессов, ИТ-ландшафта и данных (VSM, CJM, Gemba), фиксируем узкие места и формируем AS-IS картину для дальнейших решений.",
+  },
+  {
+    title: "Проектирование траектории развития",
+    description:
+      "На основе диагностики строим TO-BE модель, дерево целей и приоритизированный бэклог инициатив (quick wins, runway, long-term) с понятным роадмэпом для C-level.",
+  },
+  {
+    title: "Сопровождение внедрения изменений",
+    description:
+      "Организуем TraaS-офис, регулярные синки, поддерживаем команды в запуске PoC/MVP и реализации инициатив, помогая встроить Agile- и data-driven-подход в операционку.",
+  },
+  {
+    title: "Оценка эффекта и масштабирование",
+    description:
+      "Отслеживаем бизнес- и ИТ-метрики (lead time, T2M, MTTR и др.), фиксируем достигнутый эффект и помогаем масштабировать успешные практики и решения на другие направления.",
+  },
 ];
 
 const pastEvents = [
@@ -57,14 +73,25 @@ export default function HomePage() {
           >
             TraaS
           </h2>
-          <p className="max-w-3xl text-base leading-relaxed" style={{ color: "var(--color-muted)" }}>
-            Описание продукта TraaS добавим позже. Этот блок уже подготовлен под финальный контент в нужной структуре.
+          <p className="max-w-4xl text-base leading-relaxed" style={{ color: "var(--color-muted)" }}>
+            <strong style={{ color: "var(--color-text)" }}>TraaS</strong> — это управляемая программа цифровой трансформации, которая{" "}
+            <strong style={{ color: "var(--color-text)" }}>за 3-6 месяцев</strong> помогает компаниям ускорить вывод продуктов на рынок,
+            навести порядок в процессах и ИТ и внедрить <strong style={{ color: "var(--color-text)" }}>AI- и data-driven-подход</strong> в операционку.
+          </p>
+          <p className="mt-3 max-w-4xl text-base leading-relaxed" style={{ color: "var(--color-muted)" }}>
+            Вместе с вашей командой мы проводим быструю диагностику, собираем приоритизированный бэклог инициатив и запускаем{" "}
+            <strong style={{ color: "var(--color-text)" }}>PoC/MVP до работающих решений</strong>, опираясь на проверенную методологию,
+            Tech Bootcamp и команду экспертов (<strong style={{ color: "var(--color-text)" }}>форматы light/medium/full</strong>) с уже
+            подтвержденным эффектом по <strong style={{ color: "var(--color-text)" }}>NPS и росту компетенций</strong>.
           </p>
         </header>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {productMetrics.map((metric) => (
             <article key={metric.label} className="surface-card rounded-2xl p-4">
-              <p className="text-2xl font-bold tracking-tight" style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}>
+              <p
+                className="text-lg font-bold tracking-tight md:text-xl"
+                style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
+              >
                 {metric.num}
               </p>
               <p className="mt-1 text-sm" style={{ color: "var(--color-muted)" }}>
@@ -84,9 +111,6 @@ export default function HomePage() {
           >
             Услуги TraaS
           </h2>
-          <p className="max-w-3xl text-base leading-relaxed" style={{ color: "var(--color-muted)" }}>
-            Карточки статичны: описание сразу видно, без раскрывающихся списков.
-          </p>
         </header>
         <div className="grid gap-3 md:grid-cols-2">
           {traasServices.map((service) => (
