@@ -73,12 +73,12 @@ export default function HomePage() {
           >
             TraaS
           </h2>
-          <p className="max-w-4xl text-base leading-relaxed" style={{ color: "var(--color-muted)" }}>
+          <p className="max-w-4xl text-lg leading-relaxed md:text-xl" style={{ color: "var(--color-muted)" }}>
             <strong style={{ color: "var(--color-text)" }}>TraaS</strong> — это управляемая программа цифровой трансформации, которая{" "}
             <strong style={{ color: "var(--color-text)" }}>за 3-6 месяцев</strong> помогает компаниям ускорить вывод продуктов на рынок,
             навести порядок в процессах и ИТ и внедрить <strong style={{ color: "var(--color-text)" }}>AI- и data-driven-подход</strong> в операционку.
           </p>
-          <p className="mt-3 max-w-4xl text-base leading-relaxed" style={{ color: "var(--color-muted)" }}>
+          <p className="mt-3 max-w-4xl text-lg leading-relaxed md:text-xl" style={{ color: "var(--color-muted)" }}>
             Вместе с вашей командой мы проводим быструю диагностику, собираем приоритизированный бэклог инициатив и запускаем{" "}
             <strong style={{ color: "var(--color-text)" }}>PoC/MVP до работающих решений</strong>, опираясь на проверенную методологию,
             Tech Bootcamp и команду экспертов (<strong style={{ color: "var(--color-text)" }}>форматы light/medium/full</strong>) с уже
@@ -87,14 +87,18 @@ export default function HomePage() {
         </header>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {productMetrics.map((metric) => (
-            <article key={metric.label} className="surface-card rounded-2xl p-4">
+            <article
+              key={metric.label}
+              className="surface-card rounded-2xl p-4 transition duration-200 hover:-translate-y-0.5 hover:shadow-md"
+              style={{ background: "var(--color-primary-bg)", borderColor: "rgba(232, 50, 42, 0.25)" }}
+            >
               <p
                 className="text-lg font-bold tracking-tight md:text-xl"
                 style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
               >
                 {metric.num}
               </p>
-              <p className="mt-1 text-sm" style={{ color: "var(--color-muted)" }}>
+              <p className="mt-1 text-sm md:text-base" style={{ color: "var(--color-muted)" }}>
                 {metric.label}
               </p>
             </article>
@@ -114,14 +118,18 @@ export default function HomePage() {
         </header>
         <div className="grid gap-3 md:grid-cols-2">
           {traasServices.map((service) => (
-            <article key={service.title} className="surface-card rounded-2xl p-5">
+            <article
+              key={service.title}
+              className="surface-card rounded-2xl p-5 transition duration-200 hover:-translate-y-0.5 hover:shadow-md"
+              style={{ background: "var(--color-primary-bg)", borderColor: "rgba(232, 50, 42, 0.25)" }}
+            >
               <h3
-                className="text-lg font-semibold"
+                className="text-xl font-semibold md:text-2xl"
                 style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
               >
                 {service.title}
               </h3>
-              <p className="mt-3 text-sm leading-relaxed" style={{ color: "var(--color-muted)" }}>
+              <p className="mt-3 text-base leading-relaxed md:text-lg" style={{ color: "var(--color-muted)" }}>
                 {service.description}
               </p>
             </article>
