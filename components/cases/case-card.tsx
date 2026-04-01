@@ -5,62 +5,106 @@ type CaseCardProps = {
   item: CaseItem;
 };
 
-const trackLabels: Record<string, string> = {
-  traas: "TraaS",
-  "tech-bootcamp": "Tech Bootcamp",
-};
+function initials(name: string): string {
+  return name
+    .split(" ")
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("");
+}
 
 export function CaseCard({ item }: CaseCardProps) {
-  const trackChipClass = item.track === "traas" ? "chip-traas" : "chip-bootcamp";
-
   return (
-    <article className="surface-card group flex flex-col rounded-2xl p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-      <div className="mb-3 flex flex-wrap items-center gap-2">
-        <span className={`${trackChipClass} rounded-full px-2 py-1 text-xs font-medium`}>
-          {trackLabels[item.track] ?? item.track}
-        </span>
-        <span className="chip-base rounded-full px-2 py-1 text-xs">{item.topic}</span>
-        <span className="chip-base rounded-full px-2 py-1 text-xs">{item.year}</span>
-      </div>
-
-      <h3 className="text-base font-semibold leading-snug" style={{ color: "var(--color-primary)" }}>
-        {item.title}
-      </h3>
-
-      <p className="mt-1 text-xs text-muted">
-        {item.company}
-        {item.authorName && (
-          <>
-            {" · "}
-            {item.authorName}
-            {item.authorRole && (
-              <span className="opacity-70">, {item.authorRole}</span>
-            )}
-          </>
-        )}
-      </p>
-
-      <p className="mt-3 text-sm text-muted line-clamp-3">{item.shortDescription}</p>
-
-      <div className="result-highlight mt-4">↗ {item.result}</div>
-
+    <article
+      className="surface-card flex flex-col gap-4 rounded-[1.25rem] p-6 transition"
+      style={{
+        transition: "box-shadow var(--transition-ui), border-color var(--transition-ui), transform var(--transition-ui)",
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-lg)";
+        (e.currentTarget as HTMLElement).style.borderColor = "var(--color-faint)";
+        (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLElement).style.boxShadow = "";
+        (e.currentTarget as HTMLElement).style.borderColor = "";
+        (e.currentTarget as HTMLElement).style.transform = "";
+      }}
+    >
+      {/* Tags */}
       {item.tags.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-2">
           {item.tags.slice(0, 3).map((tag) => (
-            <span key={tag} className="chip-base rounded-full px-2 py-1 text-xs">
-              #{tag}
+            <span
+              key={tag}
+              className="chip-base rounded-full px-3 py-1 text-xs font-semibold"
+            >
+              {tag}
             </span>
           ))}
         </div>
       )}
 
-      <div className="mt-4 flex-1 flex items-end">
+      {/* Title */}
+      <h3
+        className="font-extrabold leading-tight tracking-tight"
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "clamp(1.125rem, 1rem + 0.75vw, 1.5rem)",
+          color: "var(--color-text)",
+        }}
+      >
+        {item.title}
+      </h3>
+
+      {/* Result block */}
+      <div className="result-highlight">
+        <span style={{ color: "var(--color-primary)", flexShrink: 0, lineHeight: 1, marginTop: "1px" }}>↗</span>
+        <span>{item.result}</span>
+      </div>
+
+      {/* Short description */}
+      <p className="text-sm leading-relaxed line-clamp-3" style={{ color: "var(--color-muted)", flex: 1 }}>
+        {item.shortDescription}
+      </p>
+
+      {/* Footer */}
+      <div
+        className="flex items-center justify-between gap-4 flex-wrap"
+        style={{ borderTop: "1px solid var(--color-divider)", paddingTop: "1rem", marginTop: "auto" }}
+      >
+        <div className="flex items-center gap-3">
+          {/* Avatar */}
+          <div
+            className="flex shrink-0 items-center justify-center rounded-full text-xs font-extrabold text-white"
+            style={{
+              width: "36px",
+              height: "36px",
+              background: "var(--color-primary)",
+              fontFamily: "var(--font-display)",
+            }}
+            aria-hidden="true"
+          >
+            {item.authorName ? initials(item.authorName) : initials(item.company)}
+          </div>
+          <div>
+            {item.authorName && (
+              <span className="block text-sm font-semibold" style={{ color: "var(--color-text)" }}>
+                {item.authorName}
+              </span>
+            )}
+            <span className="block text-xs" style={{ color: "var(--color-muted)" }}>
+              {item.company}
+            </span>
+          </div>
+        </div>
+
         <Link
           href={`/cases/${item.slug}`}
-          className="focusable text-xs font-medium underline decoration-dotted underline-offset-4 transition hover:opacity-80"
-          style={{ color: "var(--color-cta)" }}
+          className="focusable shrink-0 text-sm font-semibold transition hover:opacity-70"
+          style={{ color: "var(--color-primary)" }}
         >
-          Подробнее →
+          Смотреть кейс →
         </Link>
       </div>
     </article>

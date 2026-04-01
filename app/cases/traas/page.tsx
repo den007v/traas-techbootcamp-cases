@@ -5,15 +5,46 @@ export default async function TraasCasesPage() {
   const items = await getCases("traas");
 
   return (
-    <section className="space-y-6">
-      <div className="rounded-3xl bg-slate-900 px-6 py-8 text-white">
-        <p className="text-xs uppercase tracking-[0.15em] text-slate-300">TraaS Track</p>
-        <h1 className="mt-2 text-3xl font-semibold">Кейсы TraaS</h1>
-        <p className="mt-3 max-w-3xl text-sm text-slate-200">
-          Практические кейсы по продуктовым и операционным улучшениям с реальными результатами.
-        </p>
-      </div>
-      <CaseCatalog items={items} />
-    </section>
+    <>
+      {/* Hero */}
+      <section className="border-b" style={{ borderColor: "var(--color-border)" }}>
+        <div
+          className="mx-auto max-w-[1120px] px-6"
+          style={{ paddingTop: "clamp(3rem, 6vw, 5rem)", paddingBottom: "clamp(2rem, 4vw, 4rem)" }}
+        >
+          <span
+            className="mb-4 inline-block text-xs font-bold uppercase tracking-[0.1em]"
+            style={{ color: "var(--color-primary)" }}
+          >
+            TraaS
+          </span>
+          <h1
+            className="mb-4 font-black leading-tight tracking-tight"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(2rem, 1.2rem + 2.5vw, 3.5rem)",
+              color: "var(--color-text)",
+            }}
+          >
+            Кейсы участников TraaS
+          </h1>
+          <p
+            className="leading-relaxed"
+            style={{
+              fontSize: "clamp(1rem, 0.95rem + 0.25vw, 1.125rem)",
+              color: "var(--color-muted)",
+              maxWidth: "54ch",
+            }}
+          >
+            Практические кейсы по продуктовым и операционным улучшениям с реальными результатами.
+          </p>
+        </div>
+      </section>
+
+      {/* Catalog */}
+      <section className="mx-auto max-w-[1120px] px-6" style={{ paddingTop: "2.5rem", paddingBottom: "4rem" }}>
+        <CaseCatalog items={items} />
+      </section>
+    </>
   );
 }

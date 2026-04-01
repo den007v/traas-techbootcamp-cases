@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<!--
+   ______                            __
+  / ____/___  ____ ___  ____  __  __/ /____  _____
+ / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
+\____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
+                    /_/
+        Created with Perplexity Computer
+        https://www.perplexity.ai/computer
+-->
+<meta name="generator" content="Perplexity Computer">
+<meta name="author" content="Perplexity Computer">
+<meta property="og:see_also" content="https://www.perplexity.ai/computer">
+<link rel="author" href="https://www.perplexity.ai/computer">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Как сломанный RAID0 превратился в домашний датацентр — TechBootcamp Alumni</title>
+  <meta name="description" content="Кейс Николая Пахомова (СДЭК): от поломки NAS к HomeLab с 28 сервисами и ИИ-секретарём, который автоматически делает конспекты встреч.">
+
+  <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,800,900&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="case.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo" aria-label="Банк кейсов TechBootcamp">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect width="14" height="14" rx="3" fill="var(--color-primary)"/>
+          <rect x="18" width="14" height="14" rx="3" fill="var(--color-primary)" opacity="0.4"/>
+          <rect y="18" width="14" height="14" rx="3" fill="var(--color-primary)" opacity="0.4"/>
+          <rect x="18" y="18" width="14" height="14" rx="3" fill="var(--color-primary)"/>
+        </svg>
+        <span class="logo-text">TechBootcamp<span class="logo-sub"> Alumni</span></span>
+      </a>
+      <nav class="header-nav">
+        <a href="index.html#cases" class="nav-link">← Все кейсы</a>
+        <button class="btn-theme" data-theme-toggle aria-label="Переключить тему">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- CASE HERO -->
+  <section class="case-hero">
+    <div class="container">
+      <a href="index.html#cases" class="back-link">← Все кейсы</a>
+      <div class="case-tags">
+        <span class="card-tag">ИИ и автоматизация</span>
+        <span class="card-tag">Домашняя инфра</span>
+        <span class="card-tag">Инструменты</span>
+      </div>
+      <h1 class="case-title">Как сломанный RAID0 с киношками превратился в домашний датацентр и ИИ‑секретаря</h1>
+      <div class="case-meta">
+        <div class="card-author">
+          <div class="author-avatar" aria-hidden="true">НП</div>
+          <div>
+            <span class="author-name">Николай Пахомов</span>
+            <span class="author-org">СДЭК · TechBootcamp Alumni</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key results -->
+      <div class="case-results-row">
+        <div class="result-chip">
+          <span class="result-chip-num">28</span>
+          <span class="result-chip-label">сервисов на сервере</span>
+        </div>
+        <div class="result-chip">
+          <span class="result-chip-num">100%</span>
+          <span class="result-chip-label">встреч с конспектами</span>
+        </div>
+        <div class="result-chip">
+          <span class="result-chip-num">2–3 мин</span>
+          <span class="result-chip-label">на готовую заметку с 30-минутной встречи</span>
+        </div>
+        <div class="result-chip">
+          <span class="result-chip-num">0</span>
+          <span class="result-chip-label">ручных записей параллельно со встречей</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASE BODY -->
+  <div class="case-body">
+    <div class="container case-layout">
+
+      <!-- Main content -->
+      <main class="case-content">
+
+        <section class="case-block">
+          <h2>Контекст: бытовая поломка</h2>
+          <p>После переезда в новую квартиру единственным устройством, которое не попало в список «на замену», оказался домашний NAS — сетевое хранилище с 6 ТБ данных: медиатека, торрент-качалка, записи с умного дверного звонка.</p>
+          <p>В какой-то момент NAS просто перестал записывать данные. RAID0 — конфигурация без резервирования — превратился в «труп». 99% данных можно было скачать заново, рабочие файлы уцелели. Но инфраструктура исчезла целиком.</p>
+        </section>
+
+        <section class="case-block">
+          <h2>Что сделали</h2>
+          <p>Первая мысль — «куплю новые диски и всё». Но изучение рынка показало: современные NAS умеют гораздо больше, чем хранить файлы.</p>
+
+          <p><strong>Выбор железа:</strong> Asustor Numbustor2 Gen2 с апгрейдом:</p>
+          <ul class="case-list">
+            <li>2 × SSD по 1 ТБ в RAID1 — для контейнеров и базы фотохранилища</li>
+            <li>2 × HDD по 8 ТБ в RAID0 — для медиатеки (данные можно перекачать)</li>
+            <li>Оперативная память увеличена до 16 ГБ</li>
+            <li>Игровой ПК с Ubuntu + RTX 4070 12 ГБ — для локальных ИИ-моделей</li>
+          </ul>
+
+          <p>Новогодние праздники и YouTube сделали своё дело: в ленте появился ролик про Arr-стек — набор приложений, которые полностью автоматизируют поиск, скачивание и раскладку фильмов и сериалов по папкам. «А когда оно САМО, тогда оно мне точно нужно».</p>
+        </section>
+
+        <section class="case-block">
+          <h2>Что вскрылось в процессе</h2>
+          <p>Параллельно существовала другая боль: конспекты рабочих созвонов либо не делались вообще, либо терялись. Договорённости забывались. «Ручная фиксация требует дисциплины, которая в потоке управленческих задач неизбежно проседает».</p>
+          <p>Осознание: дома уже стоит сервер с языковыми моделями, сервис распознавания речи и конструктор автоматизаций. Все кубики есть — осталось собрать конвейер.</p>
+        </section>
+
+        <section class="case-block">
+          <h2>Пайплайн «встреча → заметка → Telegram»</h2>
+          <p>Конвейер работает автоматически:</p>
+          <ol class="case-list case-list--ordered">
+            <li><strong>Запись звука</strong> — WaveLink объединяет звук созвона и микрофон, Recordia пишет .wav-файл</li>
+            <li><strong>Доставка на сервер</strong> — Syncthing автоматически синхронизирует файл на NAS (или через Tailscale при работе удалённо)</li>
+            <li><strong>Триггер</strong> — n8n отслеживает появление нового файла в папке и запускает цепочку</li>
+            <li><strong>Распознавание речи</strong> — WhisperX (модель Large, русский язык) превращает аудио в текст с таймкодами и разделением по спикерам</li>
+            <li><strong>Очистка текста</strong> — JS-ноды в n8n убирают технический мусор</li>
+            <li><strong>Генерация саммари</strong> — языковая модель через Ollama формирует структурированную заметку: описание встречи, решения, действия с ответственными и дедлайнами</li>
+            <li><strong>Доставка</strong> — заметка одновременно сохраняется в Obsidian и отправляется в Telegram-бот</li>
+          </ol>
+        </section>
+
+        <section class="case-block">
+          <h2>Результаты</h2>
+          <p>Главная ценность — не экономия времени, а сам факт фиксации. Конспекты теперь появляются по умолчанию, без отдельного усилия.</p>
+          <p>Заметки используются для:</p>
+          <ul class="case-list">
+            <li>Отчётных встреч — понять общий прогресс по направлениям</li>
+            <li>Рабочих групп по проектам — обновление дорожных карт</li>
+            <li>1-на-1 и командных активностей — отслеживание динамики людей и выполнения обещаний</li>
+          </ul>
+        </section>
+
+        <section class="case-block">
+          <h2>Грабли и честные ограничения</h2>
+          <ul class="case-list">
+            <li>Все локальные модели до 14 млрд параметров не давали стабильного качества саммари — пришлось использовать облачную модель</li>
+            <li>Промпт для саммари прошёл ~20 итераций до стабильного результата</li>
+            <li>Очень длинные встречи (2+ часа) — WhisperX пока ругается на размер файла, починка в планах</li>
+          </ul>
+        </section>
+
+        <section class="case-block">
+          <h2>Что можно повторить</h2>
+          <p>Необязательно собирать HomeLab на 28 контейнеров, чтобы получить 80% эффекта:</p>
+          <div class="tip-cards">
+            <div class="tip-card">
+              <div class="tip-label">Вариант «на своём железе»</div>
+              <p>Mac mini или Mac Studio с 64 ГБ памяти → Docker + Whisper для распознавания + LLM для саммари.</p>
+            </div>
+            <div class="tip-card">
+              <div class="tip-label">Вариант «через подписки»</div>
+              <p>Готовые сервисы для записи, транскрибации и саммаризации встреч. Менее гибко, но без порога входа.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="case-block">
+          <h2>Вывод</h2>
+          <blockquote class="case-quote">
+            «Я как менеджер должен понимать, что делают и как делают мои команды. А пока сам не попробуешь потрогать руками — никогда не поймёшь, как это работает. Теория — это фигня без практики.»
+            <cite>— Николай Пахомов</cite>
+          </blockquote>
+          <p>На вопрос «какой совет дать тем, кто хочет попробовать?» ответ уместился в одно слово: «Делайте».</p>
+        </section>
+
+      </main>
+
+      <!-- Sidebar -->
+      <aside class="case-sidebar">
+        <div class="sidebar-card">
+          <h3>Инструменты из кейса</h3>
+          <ul class="tools-list" role="list">
+            <li><span class="tool-name">Docker / Portainer</span><span class="tool-desc">управление контейнерами</span></li>
+            <li><span class="tool-name">WhisperX</span><span class="tool-desc">распознавание речи</span></li>
+            <li><span class="tool-name">Ollama + OpenWebUI</span><span class="tool-desc">локальные LLM</span></li>
+            <li><span class="tool-name">n8n</span><span class="tool-desc">автоматизация пайплайна</span></li>
+            <li><span class="tool-name">Syncthing / Tailscale</span><span class="tool-desc">синхронизация и VPN</span></li>
+            <li><span class="tool-name">Obsidian</span><span class="tool-desc">база знаний</span></li>
+            <li><span class="tool-name">Jellyfin + Arr-стек</span><span class="tool-desc">медиаавтоматизация</span></li>
+            <li><span class="tool-name">Home Assistant</span><span class="tool-desc">умный дом</span></li>
+            <li><span class="tool-name">Perplexity AI</span><span class="tool-desc">генерация docker-compose, отладка</span></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card sidebar-card--highlight">
+          <div class="sidebar-author">
+            <div class="author-avatar author-avatar--lg" aria-hidden="true">НП</div>
+            <div>
+              <span class="author-name">Николай Пахомов</span>
+              <span class="author-org">СДЭК</span>
+            </div>
+          </div>
+          <p class="sidebar-bio">Менеджер в логистической компании. TechBootcamp Alumni.</p>
+        </div>
+
+        <a href="index.html#cases" class="btn btn-outline" style="width:100%; justify-content:center;">← Все кейсы</a>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <span class="footer-brand">TechBootcamp Alumni</span>
+        <span class="footer-desc">Банк кейсов участников программы. Кейсы отражают личный опыт авторов.</span>
+      </div>
+      <div class="footer-right">
+        <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer" class="footer-credit">Created with Perplexity Computer</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

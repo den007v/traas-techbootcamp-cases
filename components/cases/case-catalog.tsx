@@ -17,11 +17,13 @@ export function CaseCatalog({ items }: CaseCatalogProps) {
   const filteredItems = useMemo(() => applyFilters(items, filters), [items, filters]);
 
   return (
-    <div className="space-y-5">
-      <CaseFilters options={options} value={filters} onChange={setFilters} onReset={() => setFilters(defaultFilters)} />
-      <p className="text-sm text-slate-600">
-        Найдено кейсов: <span className="font-semibold text-slate-900">{filteredItems.length}</span>
-      </p>
+    <div className="space-y-6">
+      <CaseFilters
+        options={options}
+        value={filters}
+        onChange={setFilters}
+        onReset={() => setFilters(defaultFilters)}
+      />
       <CaseList items={filteredItems} />
     </div>
   );

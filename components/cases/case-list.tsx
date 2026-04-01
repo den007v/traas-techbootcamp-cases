@@ -8,14 +8,19 @@ type CaseListProps = {
 export function CaseList({ items }: CaseListProps) {
   if (items.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
-        <p className="text-sm text-slate-700">По выбранным фильтрам кейсы не найдены.</p>
+      <div
+        className="rounded-[1.25rem] border border-dashed p-10 text-center"
+        style={{ borderColor: "var(--color-border)", background: "var(--color-surface-offset)" }}
+      >
+        <p className="text-sm" style={{ color: "var(--color-muted)" }}>
+          По выбранным фильтрам кейсы не найдены.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
       {items.map((item) => (
         <CaseCard key={item.id} item={item} />
       ))}
