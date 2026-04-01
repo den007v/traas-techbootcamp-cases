@@ -73,12 +73,12 @@ export default function HomePage() {
           >
             TraaS
           </h2>
-          <p className="max-w-4xl text-lg leading-relaxed md:text-xl" style={{ color: "var(--color-muted)" }}>
+          <p className="max-w-4xl text-lg leading-relaxed md:text-[1.35rem]" style={{ color: "var(--color-muted)" }}>
             <strong style={{ color: "var(--color-text)" }}>TraaS</strong> — это управляемая программа цифровой трансформации, которая{" "}
             <strong style={{ color: "var(--color-text)" }}>за 3-6 месяцев</strong> помогает компаниям ускорить вывод продуктов на рынок,
             навести порядок в процессах и ИТ и внедрить <strong style={{ color: "var(--color-text)" }}>AI- и data-driven-подход</strong> в операционку.
           </p>
-          <p className="mt-3 max-w-4xl text-lg leading-relaxed md:text-xl" style={{ color: "var(--color-muted)" }}>
+          <p className="mt-3 max-w-4xl text-lg leading-relaxed md:text-[1.35rem]" style={{ color: "var(--color-muted)" }}>
             Вместе с вашей командой мы проводим быструю диагностику, собираем приоритизированный бэклог инициатив и запускаем{" "}
             <strong style={{ color: "var(--color-text)" }}>PoC/MVP до работающих решений</strong>, опираясь на проверенную методологию,
             Tech Bootcamp и команду экспертов (<strong style={{ color: "var(--color-text)" }}>форматы light/medium/full</strong>) с уже
@@ -87,11 +87,7 @@ export default function HomePage() {
         </header>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {productMetrics.map((metric) => (
-            <article
-              key={metric.label}
-              className="surface-card rounded-2xl p-4 transition duration-200 hover:-translate-y-0.5 hover:shadow-md"
-              style={{ background: "var(--color-primary-bg)", borderColor: "rgba(232, 50, 42, 0.25)" }}
-            >
+            <article key={metric.label} className="surface-card accent-card hover-lift rounded-2xl p-4">
               <p
                 className="text-lg font-bold tracking-tight md:text-xl"
                 style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
@@ -118,18 +114,14 @@ export default function HomePage() {
         </header>
         <div className="grid gap-3 md:grid-cols-2">
           {traasServices.map((service) => (
-            <article
-              key={service.title}
-              className="surface-card rounded-2xl p-5 transition duration-200 hover:-translate-y-0.5 hover:shadow-md"
-              style={{ background: "var(--color-primary-bg)", borderColor: "rgba(232, 50, 42, 0.25)" }}
-            >
+            <article key={service.title} className="surface-card accent-card hover-lift rounded-2xl p-5">
               <h3
                 className="text-xl font-semibold md:text-2xl"
                 style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
               >
                 {service.title}
               </h3>
-              <p className="mt-3 text-base leading-relaxed md:text-lg" style={{ color: "var(--color-muted)" }}>
+              <p className="mt-3 text-base leading-relaxed md:text-[1.1rem]" style={{ color: "var(--color-muted)" }}>
                 {service.description}
               </p>
             </article>
@@ -169,7 +161,7 @@ export default function HomePage() {
         </header>
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
           {pastEvents.map((event) => (
-            <article key={event.title} className="surface-card flex flex-col rounded-2xl p-5">
+            <article key={event.title} className="surface-card hover-lift flex flex-col rounded-2xl p-5">
               <p className="mb-3 text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--color-primary)" }}>
                 {event.date}
               </p>
@@ -179,18 +171,20 @@ export default function HomePage() {
               <p className="mt-3 flex-1 text-sm leading-relaxed" style={{ color: "var(--color-muted)" }}>
                 {event.description}
               </p>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="mt-3 border-t pt-3" style={{ borderColor: "var(--color-divider)" }}>
+                <div className="flex flex-wrap gap-2">
                 {event.metrics.map((metric) => (
                   <span
                     key={metric}
                     className="rounded-full px-2.5 py-1 text-xs"
-                    style={{ background: "var(--color-surface-offset)", color: "var(--color-text)" }}
+                    style={{ background: "var(--color-primary-bg)", color: "var(--color-text)", border: "1px solid rgba(232, 50, 42, 0.18)" }}
                   >
                     {metric}
                   </span>
                 ))}
+                </div>
               </div>
-              <Link href={event.href} className="mt-4 text-sm font-semibold" style={{ color: "var(--color-primary)" }}>
+              <Link href={event.href} className="mt-4 text-sm font-semibold underline underline-offset-4" style={{ color: "var(--color-primary)" }}>
                 Подробнее →
               </Link>
             </article>

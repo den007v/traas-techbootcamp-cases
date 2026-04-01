@@ -13,7 +13,7 @@ export function SiteFooter() {
             TechBootcamp Alumni
           </span>
           <span className="text-xs" style={{ color: "var(--color-faint)" }}>
-            Банк кейсов участников программы. Кейсы отражают личный опыт авторов.
+            TraaS × Tech Bootcamp — пространство программ трансформации и практических кейсов.
           </span>
         </div>
         <span className="text-xs" style={{ color: "var(--color-faint)" }}>
