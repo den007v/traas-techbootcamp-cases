@@ -1,5 +1,7 @@
 export type CaseTrack = "traas" | "tech-bootcamp";
 
+export type ModerationStatus = "pending_review" | "needs_changes" | "published" | "unpublished";
+
 export type CaseItem = {
   id: string;
   track: CaseTrack;
@@ -16,4 +18,6 @@ export type CaseItem = {
   challenge?: string;
   solution?: string;
   fullStory?: string;
+  moderationStatus?: ModerationStatus;
+  moderationComment?: string | null;
 };

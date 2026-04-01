@@ -1,7 +1,7 @@
 import { getFilterOptions as buildFilterOptions } from "@/lib/cases/filters";
 import { mockCases } from "@/lib/mock/cases";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import type { CaseItem, CaseTrack } from "@/types/case";
+import type { CaseItem, CaseTrack, ModerationStatus } from "@/types/case";
 import type { CaseFilterOptions } from "@/types/filters";
 
 type CaseRow = {
@@ -19,6 +19,8 @@ type CaseRow = {
   challenge: string | null;
   solution: string | null;
   full_story: string | null;
+  moderation_status: ModerationStatus;
+  moderation_comment: string | null;
   companies: { name: string } | { name: string }[] | null;
 };
 
@@ -51,7 +53,7 @@ async function loadCasesFromSupabase(track?: CaseTrack): Promise<CaseItem[] | nu
 
   let query = supabase
     .from("cases")
-    .select("id,track,slug,title,topic,short_description,result,year,company_id,author_name,author_role,challenge,solution,full_story,companies(name)")
+    .select("id,track,slug,title,topic,short_description,result,year,company_id,author_name,author_role,challenge,solution,full_story,moderation_status,moderation_comment,companies(name)")
     .eq("is_published", true)
     .order("year", { ascending: false })
     .order("created_at", { ascending: false });
@@ -98,7 +100,9 @@ async function loadCasesFromSupabase(track?: CaseTrack): Promise<CaseItem[] | nu
     authorRole: row.author_role ?? undefined,
     challenge: row.challenge ?? undefined,
     solution: row.solution ?? undefined,
-    fullStory: row.full_story ?? undefined
+    fullStory: row.full_story ?? undefined,
+    moderationStatus: row.moderation_status,
+    moderationComment: row.moderation_comment ?? null,
   }));
 }
 
@@ -121,7 +125,7 @@ export async function getCaseBySlug(slug: string): Promise<CaseItem | null> {
   if (supabase) {
     const { data: row, error } = await supabase
       .from("cases")
-      .select("id,track,slug,title,topic,short_description,result,year,company_id,author_name,author_role,challenge,solution,full_story,companies(name)")
+      .select("id,track,slug,title,topic,short_description,result,year,company_id,author_name,author_role,challenge,solution,full_story,moderation_status,moderation_comment,companies(name)")
       .eq("slug", slug)
       .eq("is_published", true)
       .maybeSingle();
@@ -152,7 +156,9 @@ export async function getCaseBySlug(slug: string): Promise<CaseItem | null> {
         authorRole: row.author_role ?? undefined,
         challenge: row.challenge ?? undefined,
         solution: row.solution ?? undefined,
-        fullStory: row.full_story ?? undefined
+        fullStory: row.full_story ?? undefined,
+        moderationStatus: (row as unknown as CaseRow).moderation_status,
+        moderationComment: (row as unknown as CaseRow).moderation_comment ?? null,
       };
     }
   }
@@ -180,6 +186,8 @@ export type CaseForEdit = {
   solution: string;
   fullStory: string;
   createdBy: string;
+  moderationStatus: ModerationStatus;
+  moderationComment: string | null;
 };
 
 export async function getCaseForEdit(id: string): Promise<CaseForEdit | null> {
@@ -188,7 +196,7 @@ export async function getCaseForEdit(id: string): Promise<CaseForEdit | null> {
 
   const { data: row, error } = await supabase
     .from("cases")
-    .select("id,track,slug,title,topic,short_description,result,year,challenge,solution,full_story,created_by,companies(name)")
+    .select("id,track,slug,title,topic,short_description,result,year,challenge,solution,full_story,created_by,moderation_status,moderation_comment,companies(name)")
     .eq("id", id)
     .maybeSingle();
 
@@ -219,5 +227,7 @@ export async function getCaseForEdit(id: string): Promise<CaseForEdit | null> {
     solution: row.solution ?? "",
     fullStory: row.full_story ?? "",
     createdBy: row.created_by,
+    moderationStatus: (row as unknown as CaseRow).moderation_status,
+    moderationComment: (row as unknown as CaseRow).moderation_comment ?? null,
   };
 }

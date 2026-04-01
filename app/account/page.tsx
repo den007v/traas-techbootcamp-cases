@@ -31,7 +31,7 @@ export default async function AccountPage() {
 
   const { data: myCases } = await supabase
     .from("cases")
-    .select("id, title, track, is_published, created_at")
+    .select("id, title, track, is_published, created_at, moderation_status, moderation_comment")
     .eq("created_by", user.id)
     .order("created_at", { ascending: false });
 

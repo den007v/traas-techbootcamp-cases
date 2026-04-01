@@ -1,18 +1,37 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import { publishCase } from "@/lib/cases/mutations";
+import { publishCase, returnCaseForChanges, unpublishCase } from "@/lib/cases/mutations";
 import { ModerationList } from "@/components/account/moderation-list";
+import type { ModerationStatus } from "@/types/case";
 
 async function handlePublish(caseId: string): Promise<{ error?: string }> {
   "use server";
-
   try {
     await publishCase(caseId);
     return {};
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Не удалось опубликовать кейс.";
-    return { error: message };
+    return { error: err instanceof Error ? err.message : "Не удалось опубликовать кейс." };
+  }
+}
+
+async function handleReturnForChanges(caseId: string, comment: string): Promise<{ error?: string }> {
+  "use server";
+  try {
+    await returnCaseForChanges(caseId, comment);
+    return {};
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Не удалось вернуть кейс на доработку." };
+  }
+}
+
+async function handleUnpublish(caseId: string): Promise<{ error?: string }> {
+  "use server";
+  try {
+    await unpublishCase(caseId);
+    return {};
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : "Не удалось снять кейс с публикации." };
   }
 }
 
@@ -33,15 +52,12 @@ export default async function ModerationPage() {
     .maybeSingle();
 
   const role = profile?.role ?? "participant";
+  if (role !== "admin" && role !== "editor") redirect("/account");
 
-  if (role !== "admin" && role !== "editor") {
-    redirect("/account");
-  }
-
-  const { data: drafts } = await supabase
+  const { data: cases } = await supabase
     .from("cases")
-    .select("id, title, track, author_name, created_at")
-    .eq("is_published", false)
+    .select("id, title, track, author_name, created_at, moderation_status, moderation_comment")
+    .in("moderation_status", ["pending_review", "needs_changes", "published", "unpublished"])
     .order("created_at", { ascending: false });
 
   return (
@@ -57,12 +73,25 @@ export default async function ModerationPage() {
           Модерация кейсов
         </h1>
         <p className="mt-1 text-sm text-muted">
-          Кейсы, ожидающие проверки. После публикации кейс появится в каталоге.
+          Все кейсы по статусу модерации.
         </p>
       </div>
 
       <div className="surface-card rounded-2xl p-6 shadow-sm">
-        <ModerationList drafts={drafts ?? []} publishAction={handlePublish} />
+        <ModerationList
+          cases={(cases ?? []) as Array<{
+            id: string;
+            title: string;
+            track: string;
+            author_name: string;
+            created_at: string;
+            moderation_status: ModerationStatus;
+            moderation_comment: string | null;
+          }>}
+          publishAction={handlePublish}
+          returnForChangesAction={handleReturnForChanges}
+          unpublishAction={handleUnpublish}
+        />
       </div>
     </div>
   );

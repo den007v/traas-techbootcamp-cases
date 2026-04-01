@@ -111,6 +111,8 @@ export async function createCase(input: CreateCaseInput): Promise<{ id: string; 
       result: input.result.trim(),
       year: input.year,
       is_published: false,
+      moderation_status: "pending_review",
+      moderation_comment: null,
       created_by: user.id
     })
     .select("id, slug")
@@ -221,8 +223,75 @@ export async function publishCase(caseId: string): Promise<void> {
 
   const { error } = await supabase
     .from("cases")
-    .update({ is_published: true, updated_at: new Date().toISOString() })
+    .update({
+      is_published: true,
+      moderation_status: "published",
+      moderation_comment: null,
+      updated_at: new Date().toISOString(),
+    })
     .eq("id", caseId);
 
   if (error) throw new Error("Failed to publish case: " + error.message);
+}
+
+export async function returnCaseForChanges(caseId: string, comment: string): Promise<void> {
+  const supabase = await getSupabaseServerClient();
+  if (!supabase) throw new Error("Supabase unavailable");
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Not authenticated");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  const role = profile?.role ?? "participant";
+  if (role !== "admin" && role !== "editor") {
+    throw new Error("Only admin or editor can return cases for changes");
+  }
+
+  const { error } = await supabase
+    .from("cases")
+    .update({
+      is_published: false,
+      moderation_status: "needs_changes",
+      moderation_comment: comment?.trim() || null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", caseId);
+
+  if (error) throw new Error("Failed to return case for changes: " + error.message);
+}
+
+export async function unpublishCase(caseId: string): Promise<void> {
+  const supabase = await getSupabaseServerClient();
+  if (!supabase) throw new Error("Supabase unavailable");
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Not authenticated");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  const role = profile?.role ?? "participant";
+  if (role !== "admin" && role !== "editor") {
+    throw new Error("Only admin or editor can unpublish cases");
+  }
+
+  const { error } = await supabase
+    .from("cases")
+    .update({
+      is_published: false,
+      moderation_status: "unpublished",
+      moderation_comment: null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", caseId);
+
+  if (error) throw new Error("Failed to unpublish case: " + error.message);
 }
