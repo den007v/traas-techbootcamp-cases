@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type MyCaseRow = {
   id: string;
   title: string;
@@ -23,25 +25,33 @@ export function MyCasesList({ cases }: MyCasesListProps) {
   return (
     <ul className="divide-y" style={{ borderColor: "var(--color-border)" }}>
       {cases.map((item) => (
-        <li key={item.id} className="flex items-center justify-between py-3">
-          <div>
-            <p className="text-sm font-medium" style={{ color: "var(--color-primary)" }}>
+        <li key={item.id} className="flex items-center justify-between gap-3 py-3">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-medium" style={{ color: "var(--color-primary)" }}>
               {item.title}
             </p>
             <p className="mt-0.5 text-xs text-muted">
               {trackLabels[item.track] ?? item.track} · {new Date(item.created_at).toLocaleDateString("ru-RU")}
             </p>
           </div>
-          <span
-            className="rounded-full px-2 py-1 text-xs font-medium"
-            style={
-              item.is_published
-                ? { background: "#dcfce7", color: "#166534" }
-                : { background: "var(--color-tag-bg)", color: "var(--color-cta)" }
-            }
-          >
-            {item.is_published ? "Опубликован" : "На модерации"}
-          </span>
+          <div className="flex shrink-0 items-center gap-3">
+            <Link
+              href={`/account/cases/${item.id}/edit`}
+              className="focusable text-xs text-muted underline decoration-dotted underline-offset-4 transition hover:opacity-70"
+            >
+              Редактировать
+            </Link>
+            <span
+              className="rounded-full px-2 py-1 text-xs font-medium"
+              style={
+                item.is_published
+                  ? { background: "#dcfce7", color: "#166534" }
+                  : { background: "var(--color-tag-bg)", color: "var(--color-cta)" }
+              }
+            >
+              {item.is_published ? "Опубликован" : "На модерации"}
+            </span>
+          </div>
         </li>
       ))}
     </ul>

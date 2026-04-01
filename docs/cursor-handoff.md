@@ -46,7 +46,7 @@ Middleware (`middleware.ts`): срабатывает на `/account/:path*` и `
 
 app/
 
-account/page.tsx, cases/new/page.tsx, moderation/page.tsx
+account/page.tsx, cases/new/page.tsx, cases/[id]/edit/page.tsx, moderation/page.tsx
 
 auth/login/page.tsx, register/page.tsx, callback/route.ts
 
@@ -56,7 +56,7 @@ layout.tsx, page.tsx, globals.css
 
 components/
 
-account/case-form.tsx, logout-button.tsx, moderation-list.tsx, my-cases-list.tsx
+account/case-form.tsx, case-form-edit.tsx, logout-button.tsx, moderation-list.tsx, my-cases-list.tsx
 
 auth/login-form.tsx, register-form.tsx
 
@@ -84,21 +84,37 @@ middleware.ts
 
 .cursor/rules/01-project-standards.mdc, 02-code-style.mdc, 03-supabase-guardrails.mdc
 
+Этап 6 — Улучшение отображения кейсов:
+
+- `types/case.ts` расширен optional-полями: `authorName?`, `authorRole?`, `challenge?`, `solution?`, `fullStory?`.
+- `lib/mock/cases.ts` дополнен `authorName` и `authorRole` для всех 6 моков.
+- `lib/cases/queries.ts` — SELECT расширен, новые поля маппятся в `CaseItem`; добавлена `getCaseForEdit(id)` (загружает кейс без фильтра `is_published`, включая `createdBy` и теги).
+- `app/globals.css` — добавлен `.result-highlight` (акцентный блок с левой красной границей).
+- `components/cases/case-card.tsx` — трек-чип отдельно, автор под заголовком, result в `.result-highlight`, теги до 3, ссылка "Подробнее →" вместо кнопки.
+- `app/cases/[slug]/page.tsx` — hero + двухколоночный layout (контент + sidebar); условный рендер `challenge`/`solution`/`fullStory`; если все null — секция "О кейсе" с `shortDescription`; sidebar всегда содержит result, компанию, автора, теги, год.
+
+Этап 7 — Редактирование кейса из личного кабинета:
+
+- `lib/cases/queries.ts` — `getCaseForEdit(id)`: загружает кейс по UUID без фильтра `is_published`, возвращает `CaseForEdit` с полями формы и `createdBy`.
+- `lib/cases/mutations.ts` — `replaceTagLinks(caseId, tagsRaw)`: удаляет старые теги + вызывает `linkTags`; `updateCase(caseId, input)`: проверяет права (владелец или admin/editor), обновляет контентные поля, не трогает `is_published`/`track`/`slug`.
+- `components/account/case-form-edit.tsx` — клиентская форма с `defaultValues`, track как read-only чип, поля `challenge`/`solution`/`fullStory` как textarea, состояния loading/error/success.
+- `app/account/cases/[id]/edit/page.tsx` — серверный компонент: проверка auth → загрузка кейса → проверка прав → Server Action `handleUpdate` → рендер формы.
+- `components/account/my-cases-list.tsx` — добавлена ссылка "Редактировать" рядом со статусом в каждой строке.
+
 ### 5. Следующий шаг
 
-Этап 5 завершён. Возможные следующие шаги:
+Этапы 6 и 7 завершены. Два варианта продолжения:
 
-- Роли и права: UI для назначения ролей (admin panel) или ручное управление через Supabase Dashboard.
-- AI-ассистент: placeholder-страница/компонент для будущей AI-функциональности.
-- Редактирование кейса: форма редактирования для автора и admin/editor.
-- QA и полировка: сквозное тестирование всех сценариев (создание, модерация, публикация, фильтры).
-- Деплой: подготовка к Vercel (env vars, build check).
+- **Вариант A — Усиление модерации**: страница модерации показывает ссылку "Редактировать" для каждого черновика; editor может исправить кейс прямо из очереди до публикации.
+- **Вариант B — AI-ассистент (placeholder)**: страница `/account/ai` или компонент-заглушка с формой ввода, готовая к подключению OpenAI/Anthropic API; вписывается в ЛК без изменения существующих маршрутов.
 
 ### 6. Ограничения (не ломать)
 
 - Публичные страницы (`/cases/*`) показывают только `is_published = true`.
 - `createCase` всегда ставит `is_published = false`.
 - `publishCase` проверяет роль на application level + RLS.
+- `updateCase` не меняет `is_published`, `track`, `slug`.
+- Редактировать кейс может только владелец или admin/editor (проверка на application level + RLS).
 - Моки (`lib/mock/cases.ts`) сохранены как fallback.
 - Миграции уже применены в Supabase (001, 002, 003).
 - Не удалять файлы/таблицы/политики без явного подтверждения.

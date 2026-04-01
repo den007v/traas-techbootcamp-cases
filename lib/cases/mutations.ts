@@ -123,6 +123,84 @@ export async function createCase(input: CreateCaseInput): Promise<{ id: string; 
   return { id: created.id, slug: created.slug };
 }
 
+export type UpdateCaseInput = {
+  title: string;
+  companyName: string;
+  topic: string;
+  shortDescription: string;
+  result: string;
+  year: number;
+  tagsRaw: string;
+  challenge?: string;
+  solution?: string;
+  fullStory?: string;
+};
+
+export async function replaceTagLinks(caseId: string, tagsRaw: string): Promise<void> {
+  const supabase = await getSupabaseServerClient();
+  if (!supabase) return;
+
+  await supabase
+    .from("case_tag_links")
+    .delete()
+    .eq("case_id", caseId);
+
+  await linkTags(caseId, tagsRaw);
+}
+
+export async function updateCase(caseId: string, input: UpdateCaseInput): Promise<void> {
+  const supabase = await getSupabaseServerClient();
+  if (!supabase) throw new Error("Supabase unavailable");
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) throw new Error("Not authenticated");
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  const role = profile?.role ?? "participant";
+
+  const { data: existing } = await supabase
+    .from("cases")
+    .select("id, created_by")
+    .eq("id", caseId)
+    .maybeSingle();
+
+  if (!existing) throw new Error("Case not found");
+
+  const isOwner = existing.created_by === user.id;
+  const isPrivileged = role === "admin" || role === "editor";
+
+  if (!isOwner && !isPrivileged) {
+    throw new Error("Not allowed to edit this case");
+  }
+
+  const companyId = await ensureCompany(input.companyName);
+
+  const { error } = await supabase
+    .from("cases")
+    .update({
+      title: input.title.trim(),
+      company_id: companyId,
+      topic: input.topic.trim(),
+      short_description: input.shortDescription.trim(),
+      result: input.result.trim(),
+      year: input.year,
+      challenge: input.challenge?.trim() || null,
+      solution: input.solution?.trim() || null,
+      full_story: input.fullStory?.trim() || null,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", caseId);
+
+  if (error) throw new Error("Failed to update case: " + error.message);
+
+  await replaceTagLinks(caseId, input.tagsRaw);
+}
+
 export async function publishCase(caseId: string): Promise<void> {
   const supabase = await getSupabaseServerClient();
   if (!supabase) throw new Error("Supabase unavailable");

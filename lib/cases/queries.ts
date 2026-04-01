@@ -164,3 +164,60 @@ export async function getFilterOptions(track?: CaseTrack): Promise<CaseFilterOpt
   const items = await getCases(track);
   return buildFilterOptions(items);
 }
+
+export type CaseForEdit = {
+  id: string;
+  track: "traas" | "tech_bootcamp";
+  slug: string;
+  title: string;
+  company: string;
+  topic: string;
+  shortDescription: string;
+  result: string;
+  year: number;
+  tags: string[];
+  challenge: string;
+  solution: string;
+  fullStory: string;
+  createdBy: string;
+};
+
+export async function getCaseForEdit(id: string): Promise<CaseForEdit | null> {
+  const supabase = await getSupabaseServerClient();
+  if (!supabase) return null;
+
+  const { data: row, error } = await supabase
+    .from("cases")
+    .select("id,track,slug,title,topic,short_description,result,year,challenge,solution,full_story,created_by,companies(name)")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error || !row) return null;
+
+  const { data: tagRows } = await supabase
+    .from("case_tag_links")
+    .select("case_id,case_tags(name)")
+    .eq("case_id", row.id);
+
+  const tags =
+    tagRows
+      ?.map((tagRow) => extractTagName((tagRow as CaseTagLinkRow).case_tags))
+      .filter((tag): tag is string => Boolean(tag)) ?? [];
+
+  return {
+    id: row.id,
+    track: row.track as "traas" | "tech_bootcamp",
+    slug: row.slug,
+    title: row.title,
+    company: extractCompanyName(row.companies as CaseRow["companies"]),
+    topic: row.topic,
+    shortDescription: row.short_description,
+    result: row.result,
+    year: row.year,
+    tags: [...new Set(tags)],
+    challenge: row.challenge ?? "",
+    solution: row.solution ?? "",
+    fullStory: row.full_story ?? "",
+    createdBy: row.created_by,
+  };
+}
