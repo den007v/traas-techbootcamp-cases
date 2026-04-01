@@ -6,6 +6,27 @@ const stats = [
   { num: "TraaS", label: "кейсы проектов" },
 ];
 
+const productMetrics = [
+  { num: "600+", label: "Образовательных решений" },
+  { num: "550+", label: "Преподавателей и спикеров" },
+  { num: "40 000+", label: "Слушателей ежегодно" },
+  { num: "6 600+", label: "Компаний-клиентов" },
+];
+
+const traasServices = [
+  { title: "Диагностика текущих процессов", description: "Описание услуги добавим позже. Здесь будет детализация по формату диагностики и ожидаемому результату." },
+  { title: "Проектирование траектории развития", description: "Описание услуги добавим позже. Здесь будет показано, как строится маршрут обучения и внедрения практик." },
+  { title: "Сопровождение внедрения изменений", description: "Описание услуги добавим позже. Здесь будет план поддержки команды на этапе внедрения и закрепления результата." },
+  { title: "Оценка эффекта и масштабирование", description: "Описание услуги добавим позже. Здесь опишем метрики успеха и подход к масштабированию." },
+];
+
+const pastEvents = [
+  { date: "Март 2026", title: "AI в управленческих решениях", description: "Короткое описание события добавим позже.", href: "#" },
+  { date: "Февраль 2026", title: "Практикум по цифровым инструментам команд", description: "Короткое описание события добавим позже.", href: "#" },
+  { date: "Январь 2026", title: "Интенсив по траекториям развития лидеров", description: "Короткое описание события добавим позже.", href: "#" },
+  { date: "Декабрь 2025", title: "Открытая встреча выпускников Tech Bootcamp", description: "Короткое описание события добавим позже.", href: "#" },
+];
+
 export default function HomePage() {
   return (
     <>
@@ -88,8 +109,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Tracks ── */}
+      {/* ── Products ── */}
       <section className="mx-auto max-w-[1120px] px-6" style={{ paddingTop: "3rem", paddingBottom: "4rem" }}>
+        <header className="mb-8">
+          <h2
+            className="mb-4 text-3xl font-light tracking-tight md:text-5xl"
+            style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
+          >
+            Продукты TraaS и Tech Bootcamp
+          </h2>
+          <p className="max-w-3xl text-base leading-relaxed" style={{ color: "var(--color-muted)" }}>
+            Описание продуктов добавим позже. Этот блок подготовлен как основа под контент и структуру в стиле референса.
+          </p>
+        </header>
         <div className="grid gap-5 md:grid-cols-2">
 
           <article
@@ -145,39 +177,97 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
-      <section style={{ background: "var(--color-primary)", padding: "clamp(3rem, 6vw, 5rem) 0" }}>
-        <div className="mx-auto max-w-[1120px] px-6">
-          <div className="grid gap-12 md:grid-cols-[1fr_auto] md:items-center">
+      {/* ── About + Metrics ── */}
+      <section className="mx-auto max-w-[1120px] px-6" style={{ paddingBottom: "4rem" }}>
+        <div className="surface-card rounded-3xl p-6 md:p-10">
+          <div className="grid gap-10 md:grid-cols-2">
             <div>
               <h2
-                className="mb-4 font-black leading-tight tracking-tight"
-                style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem, 1.2rem + 2.5vw, 3.5rem)", color: "#fff" }}
+                className="mb-4 text-3xl font-light leading-tight tracking-tight md:text-5xl"
+                style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
               >
-                Хотите, чтобы ваш кейс был здесь?
+                О TraaS и Tech Bootcamp
               </h2>
-              <p className="mb-5 leading-relaxed" style={{ color: "rgba(255,255,255,0.82)", maxWidth: "54ch" }}>
-                Расскажите о своём опыте — что пробовали, что получилось, какой инструмент или подход помог. Кейс не обязательно должен быть «успешным» — честная история важнее красивой.
+              <p className="leading-relaxed" style={{ color: "var(--color-muted)", maxWidth: "56ch" }}>
+                Текст описания программ будет добавлен позже. Блок сделан с акцентом на крупную типографику и метрики, чтобы визуально повторить структуру референса.
               </p>
-              <ul className="flex flex-col gap-2 text-sm" style={{ color: "rgba(255,255,255,0.75)" }}>
-                <li className="relative pl-5 before:absolute before:left-0 before:content-['→'] before:opacity-50">Любой формат: текст, презентация, ссылка</li>
-                <li className="relative pl-5 before:absolute before:left-0 before:content-['→'] before:opacity-50">Оформим и опубликуем вместе с вами</li>
-                <li className="relative pl-5 before:absolute before:left-0 before:content-['→'] before:opacity-50">Шаблон кейса вышлем по запросу</li>
-              </ul>
             </div>
-            <div className="flex flex-col items-start gap-3 md:items-center md:text-center">
-              <Link
-                href="/account"
-                className="focusable inline-flex rounded-[0.625rem] bg-white px-8 py-4 text-base font-bold transition hover:opacity-90"
-                style={{ color: "var(--color-primary)", fontFamily: "var(--font-display)" }}
-              >
-                Предложить кейс
-              </Link>
-              <p className="text-xs" style={{ color: "rgba(255,255,255,0.55)" }}>
-                или напишите координатору программы
-              </p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {productMetrics.map((metric) => (
+                <article key={metric.label} className="rounded-2xl p-4" style={{ background: "var(--color-surface-offset)" }}>
+                  <p className="text-2xl font-bold tracking-tight" style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}>
+                    {metric.num}
+                  </p>
+                  <p className="mt-1 text-sm" style={{ color: "var(--color-muted)" }}>
+                    {metric.label}
+                  </p>
+                </article>
+              ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── TraaS Services ── */}
+      <section className="mx-auto max-w-[1120px] px-6" style={{ paddingBottom: "4rem" }}>
+        <header className="mb-8">
+          <h2
+            className="mb-4 text-3xl font-light tracking-tight md:text-5xl"
+            style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
+          >
+            Услуги TraaS
+          </h2>
+          <p className="max-w-3xl text-base leading-relaxed" style={{ color: "var(--color-muted)" }}>
+            Нажмите на карточку, чтобы открыть описание направления.
+          </p>
+        </header>
+        <div className="grid gap-3 md:grid-cols-2">
+          {traasServices.map((service) => (
+            <details key={service.title} className="surface-card rounded-2xl p-5 open:shadow-sm">
+              <summary
+                className="cursor-pointer list-none text-lg font-semibold"
+                style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
+              >
+                {service.title}
+              </summary>
+              <p className="mt-3 text-sm leading-relaxed" style={{ color: "var(--color-muted)" }}>
+                {service.description}
+              </p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Events ── */}
+      <section className="mx-auto max-w-[1120px] px-6" style={{ paddingBottom: "5rem" }}>
+        <header className="mb-8">
+          <h2
+            className="mb-4 text-3xl font-light tracking-tight md:text-5xl"
+            style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}
+          >
+            Прошедшие события кемпа
+          </h2>
+          <p className="max-w-3xl text-base leading-relaxed" style={{ color: "var(--color-muted)" }}>
+            Блок сделан по структуре референса СберУниверситета. Контент карточек можно легко заменить на фактический.
+          </p>
+        </header>
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+          {pastEvents.map((event) => (
+            <article key={event.title} className="surface-card flex flex-col rounded-2xl p-5">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--color-primary)" }}>
+                {event.date}
+              </p>
+              <h3 className="text-base font-semibold leading-snug" style={{ color: "var(--color-text)" }}>
+                {event.title}
+              </h3>
+              <p className="mt-3 flex-1 text-sm leading-relaxed" style={{ color: "var(--color-muted)" }}>
+                {event.description}
+              </p>
+              <Link href={event.href} className="mt-4 text-sm font-semibold" style={{ color: "var(--color-primary)" }}>
+                Подробнее →
+              </Link>
+            </article>
+          ))}
         </div>
       </section>
     </>
