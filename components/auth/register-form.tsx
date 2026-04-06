@@ -10,12 +10,17 @@ export function RegisterForm() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    if (!acceptedPrivacy) {
+      setError("Нужно принять политику конфиденциальности и согласие на обработку данных.");
+      return;
+    }
     setLoading(true);
 
     const supabase = getSupabaseBrowserClient();
@@ -90,6 +95,20 @@ export function RegisterForm() {
           style={{ borderColor: "var(--color-border)", background: "var(--color-surface)" }}
           placeholder="Минимум 6 символов"
         />
+      </label>
+
+      <label className="flex cursor-pointer items-start gap-3 text-sm">
+        <input
+          type="checkbox"
+          checked={acceptedPrivacy}
+          onChange={(e) => setAcceptedPrivacy(e.target.checked)}
+          className="focusable mt-1 h-4 w-4 shrink-0 rounded border"
+          style={{ borderColor: "var(--color-border)", accentColor: "var(--color-primary)" }}
+        />
+        <span className="text-muted leading-snug">
+          Я принимаю политику конфиденциальности и даю согласие на обработку персональных данных.{" "}
+          <span className="text-xs opacity-90">(текст документа будет размещён по ссылке позже)</span>
+        </span>
       </label>
 
       {error && (

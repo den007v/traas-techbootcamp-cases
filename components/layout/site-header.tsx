@@ -3,12 +3,13 @@ import { MainNav } from "@/components/layout/main-nav";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 
 export async function SiteHeader() {
-  let isLoggedIn = false;
-
+  let showLogin = true;
   const supabase = await getSupabaseServerClient();
   if (supabase) {
-    const { data: { user } } = await supabase.auth.getUser();
-    isLoggedIn = !!user;
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+    showLogin = !user;
   }
 
   return (
@@ -32,7 +33,7 @@ export async function SiteHeader() {
           </span>
         </Link>
 
-        <MainNav isLoggedIn={isLoggedIn} />
+        <MainNav showLogin={showLogin} />
       </div>
     </header>
   );

@@ -31,10 +31,12 @@ export default async function CasePage({ params }: CasePageProps) {
   const authorDisplay = item.authorName ?? item.company;
   const hasStory = Boolean(item.fullStory);
   const hasNarrative = Boolean(item.challenge || item.solution || item.fullStory);
+  const metrics = item.highlightMetrics ?? [];
+  const hasMetrics = metrics.length > 0;
 
   return (
     <>
-      {/* ── Case Hero ── */}
+      {/* ── Case Hero: метрики вверху ── */}
       <section
         className="border-b"
         style={{ borderColor: "var(--color-border)", padding: "clamp(2.5rem, 5vw, 4rem) 0 clamp(2rem, 4vw, 3rem)" }}
@@ -48,58 +50,68 @@ export default async function CasePage({ params }: CasePageProps) {
             ← Все кейсы {trackLabel}
           </Link>
 
-          {/* Top chips */}
           <div className="mb-5 flex flex-wrap gap-2">
             <span className="chip-base rounded-full px-3 py-1 text-xs font-semibold">{trackLabel}</span>
             <span className="chip-base rounded-full px-3 py-1 text-xs font-semibold">{item.topic}</span>
           </div>
 
-          {/* Title */}
           <h1
-            className="mb-6 font-black leading-tight tracking-tight"
+            className="mb-5 font-semibold leading-tight tracking-tight"
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(1.75rem, 1rem + 3vw, 3rem)",
+              fontSize: "clamp(1.75rem, 1rem + 3vw, 2.75rem)",
               color: "var(--color-text)",
-              maxWidth: "22ch",
+              maxWidth: "32ch",
             }}
           >
             {item.title}
           </h1>
 
-          {/* Author meta */}
-          <div className="mb-8 flex items-center gap-3">
-            <div
-              className="flex shrink-0 items-center justify-center rounded-full text-xs font-extrabold text-white"
-              style={{ width: "36px", height: "36px", background: "var(--color-primary)", fontFamily: "var(--font-display)" }}
-              aria-hidden="true"
-            >
-              {initials(authorDisplay)}
-            </div>
-            <div>
-              {item.authorName && (
-                <span className="block text-sm font-semibold" style={{ color: "var(--color-text)" }}>
-                  {item.authorName}
-                </span>
-              )}
-              <span className="block text-xs" style={{ color: "var(--color-muted)" }}>
-                {item.company}{item.authorRole ? ` · ${item.authorRole}` : ""}
-              </span>
-            </div>
-          </div>
+          <p className="mb-8 max-w-3xl text-base leading-relaxed" style={{ color: "var(--color-muted)" }}>
+            {item.shortDescription}
+          </p>
 
-          {/* Key result */}
-          <div
-            className="max-w-2xl rounded-[1rem] p-4"
-            style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderLeft: "3px solid var(--color-primary)" }}
-          >
-            <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--color-primary)" }}>
-              Ключевой результат
-            </p>
-            <p className="mt-2 text-sm leading-relaxed" style={{ color: "var(--color-text)" }}>
-              {item.result}
-            </p>
-          </div>
+          {hasMetrics ? (
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
+              {metrics.map((m) => (
+                <div
+                  key={`${m.label}-${m.value}`}
+                  className="accent-card rounded-[1rem] px-4 py-5"
+                  style={{ border: "1px solid rgba(232, 50, 42, 0.18)" }}
+                >
+                  <p
+                    className="font-semibold leading-none tracking-tight"
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "clamp(1.75rem, 1.25rem + 2vw, 2.75rem)",
+                      color: "var(--color-primary)",
+                    }}
+                  >
+                    {m.value}
+                  </p>
+                  <p className="mt-3 text-xs font-medium leading-snug" style={{ color: "var(--color-muted)" }}>
+                    {m.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div
+              className="max-w-2xl rounded-[1rem] p-5"
+              style={{
+                background: "var(--color-surface)",
+                border: "1px solid var(--color-border)",
+                borderLeft: "3px solid var(--color-primary)",
+              }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--color-primary)" }}>
+                Ключевой результат
+              </p>
+              <p className="mt-2 text-sm leading-relaxed" style={{ color: "var(--color-text)" }}>
+                {item.result}
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -161,17 +173,40 @@ export default async function CasePage({ params }: CasePageProps) {
               )}
             </main>
 
-            {/* ── Sidebar ── */}
+            {/* ── Sidebar: инструменты, автор, теги ── */}
             <aside style={{ position: "sticky", top: "80px", display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {item.toolsUsed && item.toolsUsed.length > 0 && (
+                <div
+                  className="flex flex-col gap-3 rounded-[1.25rem] p-5"
+                  style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)" }}
+                >
+                  <h3 className="text-sm font-semibold" style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}>
+                    Инструменты
+                  </h3>
+                  <ul className="flex flex-col gap-2.5" style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                    {item.toolsUsed.map((tool) => (
+                      <li
+                        key={tool}
+                        className="text-sm leading-snug pl-3"
+                        style={{ borderLeft: "2px solid var(--color-primary)", color: "var(--color-muted)" }}
+                      >
+                        {tool}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-              {/* Author card */}
               <div
                 className="flex flex-col gap-4 rounded-[1.25rem] p-5"
-                style={{ background: "var(--color-primary-bg)", border: "1px solid transparent" }}
+                style={{ background: "var(--color-primary-bg)", border: "1px solid rgba(232, 50, 42, 0.15)" }}
               >
+                <h3 className="text-sm font-semibold" style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}>
+                  Автор
+                </h3>
                 <div className="flex items-center gap-3">
                   <div
-                    className="flex shrink-0 items-center justify-center rounded-full text-sm font-extrabold text-white"
+                    className="flex shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white"
                     style={{ width: "48px", height: "48px", background: "var(--color-primary)", fontFamily: "var(--font-display)" }}
                     aria-hidden="true"
                   >
@@ -195,18 +230,19 @@ export default async function CasePage({ params }: CasePageProps) {
                 )}
               </div>
 
-              {/* Tags */}
               {item.tags.length > 0 && (
                 <div
                   className="flex flex-col gap-3 rounded-[1.25rem] p-5"
                   style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)" }}
                 >
-                  <h3 className="text-sm font-extrabold" style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}>
+                  <h3 className="text-sm font-semibold" style={{ fontFamily: "var(--font-display)", color: "var(--color-text)" }}>
                     Теги
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {item.tags.map((tag) => (
-                      <span key={tag} className="chip-base rounded-full px-3 py-1 text-xs font-semibold">{tag}</span>
+                      <span key={tag} className="chip-base rounded-full px-3 py-1 text-xs font-semibold">
+                        {tag}
+                      </span>
                     ))}
                   </div>
                 </div>

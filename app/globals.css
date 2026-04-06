@@ -137,6 +137,48 @@ button { cursor: pointer; }
 
 .text-muted { color: var(--color-muted); }
 
+/* Landing: единая иерархия начертаний */
+.landing-section-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--color-text);
+  font-size: clamp(1.5rem, 1.1rem + 1.5vw, 2.25rem);
+}
+
+.landing-lead {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.92rem + 0.35vw, 1.125rem);
+  line-height: 1.65;
+  color: var(--color-muted);
+}
+
+.landing-lead strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.landing-metric-num {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.125rem);
+}
+
+.landing-visual-blob {
+  border-radius: var(--radius-xl);
+  min-height: 180px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--color-primary) 18%, var(--color-surface)) 0%,
+    var(--color-surface-offset) 45%,
+    color-mix(in srgb, var(--color-primary) 12%, var(--color-bg)) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--color-primary) 15%, var(--color-border));
+}
+
 .btn-cta {
   background: var(--color-cta);
   color: #fff;

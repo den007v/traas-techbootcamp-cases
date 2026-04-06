@@ -19,7 +19,10 @@ export function CaseList({ items }: CaseListProps) {
     );
   }
 
-  const gridClass = items.length <= 2 ? "grid gap-6 md:grid-cols-2" : "grid gap-6 md:grid-cols-2 xl:grid-cols-3";
+  const gridClass =
+    items.length === 1
+      ? "grid max-w-3xl gap-8"
+      : "grid gap-8 md:grid-cols-2";
 
   return (
     <div className={gridClass}>
