@@ -1,7 +1,7 @@
 import { getFilterOptions as buildFilterOptions } from "@/lib/cases/filters";
 import { mockCases } from "@/lib/mock/cases";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
-import type { CaseItem, CaseTrack, ModerationStatus } from "@/types/case";
+import type { CaseHighlightMetric, CaseItem, CaseTrack, ModerationStatus } from "@/types/case";
 import type { CaseFilterOptions } from "@/types/filters";
 
 type CaseRow = {
@@ -21,6 +21,9 @@ type CaseRow = {
   full_story: string | null;
   moderation_status: ModerationStatus;
   moderation_comment: string | null;
+  cover_image_url: string | null;
+  highlight_metrics: unknown;
+  tools_used: string[] | null;
   companies: { name: string } | { name: string }[] | null;
 };
 
@@ -45,6 +48,43 @@ function extractTagName(caseTags: CaseTagLinkRow["case_tags"]): string | null {
   return caseTags.name ?? null;
 }
 
+function parseHighlightMetrics(raw: unknown): CaseHighlightMetric[] {
+  if (!raw || !Array.isArray(raw)) return [];
+  const out: CaseHighlightMetric[] = [];
+  for (const row of raw) {
+    if (!row || typeof row !== "object") continue;
+    const label = "label" in row ? String((row as { label: unknown }).label).trim() : "";
+    const value = "value" in row ? String((row as { value: unknown }).value).trim() : "";
+    if (label && value) out.push({ label, value });
+  }
+  return out;
+}
+
+function mapRowToCaseItem(row: CaseRow, tags: string[]): CaseItem {
+  return {
+    id: row.id,
+    track: normalizeTrack(row.track),
+    slug: row.slug,
+    title: row.title,
+    company: extractCompanyName(row.companies),
+    topic: row.topic,
+    shortDescription: row.short_description,
+    tags: [...new Set(tags)],
+    year: row.year,
+    result: row.result,
+    authorName: row.author_name,
+    authorRole: row.author_role ?? undefined,
+    challenge: row.challenge ?? undefined,
+    solution: row.solution ?? undefined,
+    fullStory: row.full_story ?? undefined,
+    moderationStatus: row.moderation_status,
+    moderationComment: row.moderation_comment ?? null,
+    coverImageUrl: row.cover_image_url ?? null,
+    highlightMetrics: parseHighlightMetrics(row.highlight_metrics),
+    toolsUsed: row.tools_used?.length ? row.tools_used : undefined,
+  };
+}
+
 async function loadCasesFromSupabase(track?: CaseTrack): Promise<CaseItem[] | null> {
   const supabase = await getSupabaseServerClient();
   if (!supabase) return null;
@@ -53,7 +93,9 @@ async function loadCasesFromSupabase(track?: CaseTrack): Promise<CaseItem[] | nu
 
   let query = supabase
     .from("cases")
-    .select("id,track,slug,title,topic,short_description,result,year,company_id,author_name,author_role,challenge,solution,full_story,moderation_status,moderation_comment,companies(name)")
+    .select(
+      "id,track,slug,title,topic,short_description,result,year,company_id,author_name,author_role,challenge,solution,full_story,moderation_status,moderation_comment,cover_image_url,highlight_metrics,tools_used,companies(name)"
+    )
     .eq("is_published", true)
     .order("year", { ascending: false })
     .order("created_at", { ascending: false });
@@ -85,25 +127,9 @@ async function loadCasesFromSupabase(track?: CaseTrack): Promise<CaseItem[] | nu
     }
   }
 
-  return (caseRows as CaseRow[]).map((row) => ({
-    id: row.id,
-    track: normalizeTrack(row.track),
-    slug: row.slug,
-    title: row.title,
-    company: extractCompanyName(row.companies),
-    topic: row.topic,
-    shortDescription: row.short_description,
-    tags: [...new Set(tagMap.get(row.id) ?? [])],
-    year: row.year,
-    result: row.result,
-    authorName: row.author_name,
-    authorRole: row.author_role ?? undefined,
-    challenge: row.challenge ?? undefined,
-    solution: row.solution ?? undefined,
-    fullStory: row.full_story ?? undefined,
-    moderationStatus: row.moderation_status,
-    moderationComment: row.moderation_comment ?? null,
-  }));
+  return (caseRows as CaseRow[]).map((row) =>
+    mapRowToCaseItem(row, tagMap.get(row.id) ?? [])
+  );
 }
 
 function loadCasesFromMocks(track?: CaseTrack): CaseItem[] {
@@ -125,7 +151,9 @@ export async function getCaseBySlug(slug: string): Promise<CaseItem | null> {
   if (supabase) {
     const { data: row, error } = await supabase
       .from("cases")
-      .select("id,track,slug,title,topic,short_description,result,year,company_id,author_name,author_role,challenge,solution,full_story,moderation_status,moderation_comment,companies(name)")
+      .select(
+        "id,track,slug,title,topic,short_description,result,year,company_id,author_name,author_role,challenge,solution,full_story,moderation_status,moderation_comment,cover_image_url,highlight_metrics,tools_used,companies(name)"
+      )
       .eq("slug", slug)
       .eq("is_published", true)
       .maybeSingle();
@@ -141,25 +169,7 @@ export async function getCaseBySlug(slug: string): Promise<CaseItem | null> {
           ?.map((tagRow) => extractTagName((tagRow as CaseTagLinkRow).case_tags))
           .filter((tag): tag is string => Boolean(tag)) ?? [];
 
-      return {
-        id: row.id,
-        track: normalizeTrack(row.track),
-        slug: row.slug,
-        title: row.title,
-        company: extractCompanyName(row.companies as CaseRow["companies"]),
-        topic: row.topic,
-        shortDescription: row.short_description,
-        tags: [...new Set(tags)],
-        year: row.year,
-        result: row.result,
-        authorName: row.author_name,
-        authorRole: row.author_role ?? undefined,
-        challenge: row.challenge ?? undefined,
-        solution: row.solution ?? undefined,
-        fullStory: row.full_story ?? undefined,
-        moderationStatus: (row as unknown as CaseRow).moderation_status,
-        moderationComment: (row as unknown as CaseRow).moderation_comment ?? null,
-      };
+      return mapRowToCaseItem(row as CaseRow, tags);
     }
   }
 

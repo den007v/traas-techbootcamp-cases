@@ -2,10 +2,11 @@ import Link from "next/link";
 import { navigation } from "@/lib/constants/navigation";
 
 type MainNavProps = {
-  isLoggedIn: boolean;
+  /** Показывать «Войти» только гостям; у авторизованных пункт ЛК в шапке не показываем */
+  showLogin: boolean;
 };
 
-export function MainNav({ isLoggedIn }: MainNavProps) {
+export function MainNav({ showLogin }: MainNavProps) {
   return (
     <nav className="flex flex-wrap items-center gap-2 text-sm">
       {navigation.map((item) => (
@@ -17,18 +18,8 @@ export function MainNav({ isLoggedIn }: MainNavProps) {
           {item.label}
         </Link>
       ))}
-      {isLoggedIn ? (
-        <Link
-          href="/account"
-          className="btn-cta focusable rounded-full px-3 py-1.5 text-sm transition"
-        >
-          Кабинет
-        </Link>
-      ) : (
-        <Link
-          href="/auth/login"
-          className="btn-ghost focusable rounded-full px-3 py-1.5 transition"
-        >
+      {showLogin && (
+        <Link href="/auth/login" className="btn-ghost focusable rounded-full px-3 py-1.5 transition">
           Войти
         </Link>
       )}

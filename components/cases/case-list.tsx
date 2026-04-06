@@ -19,8 +19,13 @@ export function CaseList({ items }: CaseListProps) {
     );
   }
 
+  const gridClass =
+    items.length === 1
+      ? "grid max-w-3xl gap-8"
+      : "grid gap-8 md:grid-cols-2";
+
   return (
-    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+    <div className={gridClass}>
       {items.map((item) => (
         <CaseCard key={item.id} item={item} />
       ))}
